@@ -4,6 +4,7 @@ import express from "express"
 import helmet from "helmet"
 import cors from "cors"
 import morgan from "morgan"
+import superHero from "../src/superhero/superhero.routes.js"
 
 const middlewares = (app) => {
     app.use(express.urlencoded({ extended: false }));
@@ -14,6 +15,7 @@ const middlewares = (app) => {
 }
 
 const routes = (app) => {
+    app.use("/apiSuperHero/v1/superHero", superHero)
 
 }
 
