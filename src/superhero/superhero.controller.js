@@ -9,8 +9,6 @@ export const superHero = async (req, res) => {
     try {
         const { uid } = req.params;
 
-        console.log(uid);
-
         const url = `${path}/${key}/${uid}`;
 
         const agent = new https.Agent({
@@ -21,9 +19,39 @@ export const superHero = async (req, res) => {
             httpsAgent: agent  
         });
 
+        const dataSuper = response.data
+
         if (response.data && response.data.response === 'success') {
             return res.status(200).json({
-                superHero: response.data,  
+                superHero: {
+                    id: dataSuper.id,
+                    name: dataSuper.name,
+                    Powerstats:{
+                        powerstats: dataSuper.powerstats
+                    },
+                    Biography:{
+                        ['full-name']: dataSuper.biography['full-name'],
+                        ['place-of-birth']: dataSuper.biography['place-of-birth'],
+                        publisher: dataSuper.biography.publisher
+                    },
+                    Appearance: {
+                        gender: dataSuper.appearance.gender,
+                        race: dataSuper.appearance.race,
+                        height: [
+                            dataSuper.appearance.height
+                        ],
+                        weight: [
+                            dataSuper.appearance.weight
+                        ]
+                    },
+                    Work: {
+                        occupation: dataSuper.work.occupation
+                    },
+                    Image:{
+                        image: dataSuper.image.url
+                    }
+
+                }
             });
         } else {
             return res.status(400).json({
